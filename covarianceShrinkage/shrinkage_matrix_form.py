@@ -71,17 +71,4 @@ class Covariance_Shrinkage:
         D_pca = np.diag(list(D[0:threshold_index+1]) + (len(D) - threshold_index-1)*[0])
         return U@D_pca@U.T
 
-if __name__=="__main__":
-    
-    import pandas_datareader as web
-    stock_prices = web.DataReader(['WFC','BRK-B','TMUS','F','SONY','JPM','OGZPY'],'yahoo','01-01-2019','01-01-2020')['Adj Close']
-    stock_returns = stock_prices.pct_change(1).dropna()
-    test = Covariance_Shrinkage(stock_returns)
-    sample_cov = test.get_sample_cov_mat()
-    shrunk_mat, shrink = test.get_optimal_shrunk_cov_mat()
-    target_shrunk_mat = test.get_shrunk_cov_mat(target = np.diag(np.diag(sample_cov)),constant=0.3)
-    print("Sample\n",sample_cov)
-    print("Optimal Shrunk\n",shrunk_mat)
-    print("Target Shrunk\n",target_shrunk_mat)
-
     
